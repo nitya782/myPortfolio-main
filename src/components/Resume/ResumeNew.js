@@ -46,7 +46,7 @@ function ResumeNew() {
       <Row className="resume" style={{ justifyContent: "center", overflowX: "auto" }}>
         {loadError ? (
           <Alert variant="danger" style={{ textAlign: "center" }}>
-            PDF failed to load. You can still download it using the button above.
+            PDF failed to load.
           </Alert>
         ) : (
           <Document
