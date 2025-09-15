@@ -66,6 +66,17 @@ function Projects() {
             />
           </Col>
 
+          <Col md={4} className="project-card">
+            <ProjectCard
+              imgPath={emotion}
+              isBlog={false}
+              title="Calm Chatbot"
+              description="Calm Chatbot is designed to support mental health and emotional well-being by offering empathetic conversations and a safe space to express feelings. It gently guides users with comforting messages and personalized YouTube recommendations for relaxation, mindfulness, and positivity."
+              ghLink="https://github.com/nitya782/mental_health_chatbot_final"
+              // demoLink="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley" <--------Please include a demo link here
+            />
+          </Col>
+
         </Row>
       </Container>
     </Container>
