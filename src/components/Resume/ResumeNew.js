@@ -10,41 +10,38 @@ pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pd
 
 function ResumeNew() {
   const [width, setWidth] = useState(1200);
-  const [showResume, setShowResume] = useState(true);
+  const pdfFile = "/Nityash_resume.pdf";
 
   useEffect(() => {
     setWidth(window.innerWidth);
   }, []);
 
-  if (!showResume) return null;
-
   return (
-    <div>
-      <Container fluid className="resume-section" style={{ position: "relative" }}>
-        <Particle />
-        <Row style={{ justifyContent: "center", position: "relative" }}>
-          <Button variant="primary" href="/Nityash_resume.pdf" target="_blank" style={{ maxWidth: "250px" }}>
-            <AiOutlineDownload />
-            &nbsp;Download CV
-          </Button>
-        </Row>
+    <Container fluid className="resume-section" style={{ position: "relative" }}>
+      <Particle />
 
-        <Row className="resume" style={{ justifyContent: "center" }}>
-          <Document file="/Nityash_resume.pdf">
-            <Page pageNumber={1} scale={width > 786 ? 1.7 : 0.6} />
-          </Document>
-        </Row>
+      <Row style={{ justifyContent: "center", marginBottom: "20px" }}>
+        <Button variant="primary" href={pdfFile} target="_blank" style={{ maxWidth: "250px" }}>
+          <AiOutlineDownload /> &nbsp;Download CV
+        </Button>
+      </Row>
 
-        <Row style={{ justifyContent: "center", position: "relative" }}>
-          <Button variant="primary" href="/Nityash_resume.pdf" target="_blank" style={{ maxWidth: "250px" }}>
-            <AiOutlineDownload />
-            &nbsp;Download CV
-          </Button>
-        </Row>
-      </Container>
-    </div>
+      <Row className="resume" style={{ justifyContent: "center" }}>
+        <Document
+          file={pdfFile}
+          onLoadError={(error) => console.error("Error while loading PDF:", error)}
+        >
+          <Page pageNumber={1} scale={width > 786 ? 1.7 : 0.6} />
+        </Document>
+      </Row>
+
+      <Row style={{ justifyContent: "center", marginTop: "20px" }}>
+        <Button variant="primary" href={pdfFile} target="_blank" style={{ maxWidth: "250px" }}>
+          <AiOutlineDownload /> &nbsp;Download CV
+        </Button>
+      </Row>
+    </Container>
   );
 }
 
 export default ResumeNew;
-
