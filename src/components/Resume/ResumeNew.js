@@ -11,12 +11,20 @@ pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pd
 
 function ResumeNew() {
   const [width, setWidth] = useState(1200);
-  const pdfFile = "/Nityash_resume.pdf"; // Path in public folder
+  const [numPages, setNumPages] = useState(null);
 
-  // Set current window width for responsive scaling
+  // Set window width for responsive scaling
   useEffect(() => {
     setWidth(window.innerWidth);
   }, []);
+
+  const pdfFile = "/Nityash_resume.pdf"; // PDF in public folder
+
+  // Called when PDF is loaded successfully
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+    console.log(`PDF loaded successfully with ${numPages} pages`);
+  };
 
   return (
     <Container fluid className="resume-section" style={{ position: "relative" }}>
@@ -24,34 +32,31 @@ function ResumeNew() {
 
       {/* Top Download Button */}
       <Row style={{ justifyContent: "center", marginBottom: "20px" }}>
-        <Button
-          variant="primary"
-          href={pdfFile}
-          target="_blank"
-          style={{ maxWidth: "250px" }}
-        >
+        <Button variant="primary" href={pdfFile} target="_blank" style={{ maxWidth: "250px" }}>
           <AiOutlineDownload /> &nbsp;Download CV
         </Button>
       </Row>
 
       {/* PDF Viewer */}
-      <Row className="resume" style={{ justifyContent: "center" }}>
+      <Row className="resume" style={{ justifyContent: "center", overflowX: "auto" }}>
         <Document
           file={pdfFile}
-          onLoadError={(error) => console.error("Error loading PDF:", error)}
+          onLoadSuccess={onDocumentLoadSuccess}
+          onLoadError={(error) => console.error("PDF load error:", error)}
         >
-          <Page pageNumber={1} scale={width > 786 ? 1.7 : 0.6} />
+          {Array.from(new Array(numPages), (el, index) => (
+            <Page
+              key={`page_${index + 1}`}
+              pageNumber={index + 1}
+              scale={width > 786 ? 1.7 : 0.6}
+            />
+          ))}
         </Document>
       </Row>
 
       {/* Bottom Download Button */}
       <Row style={{ justifyContent: "center", marginTop: "20px" }}>
-        <Button
-          variant="primary"
-          href={pdfFile}
-          target="_blank"
-          style={{ maxWidth: "250px" }}
-        >
+        <Button variant="primary" href={pdfFile} target="_blank" style={{ maxWidth: "250px" }}>
           <AiOutlineDownload /> &nbsp;Download CV
         </Button>
       </Row>
@@ -60,4 +65,3 @@ function ResumeNew() {
 }
 
 export default ResumeNew;
-
