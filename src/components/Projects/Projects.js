@@ -70,7 +70,7 @@ function Projects() {
             <ProjectCard
               imgPath={emotion}
               isBlog={false}
-              title="NiVoice– Real-Time Video Calling App"
+              title="NiVoice"
               description="Built a real-time video calling and chat application using
  Node.js, Express.js, React.js, Socket.IO, and WebRTC for peer-to-peer media streaming. Integrated JWT authentication,
  bcrypt for secure password hashing, and crypto-based encryption to ensure data privacy. Implemented features such as
