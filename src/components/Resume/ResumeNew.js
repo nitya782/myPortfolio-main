@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Alert } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Particle from "../Particle";
 import { AiOutlineDownload } from "react-icons/ai";
@@ -12,18 +12,23 @@ pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pd
 function ResumeNew() {
   const [width, setWidth] = useState(1200);
   const [numPages, setNumPages] = useState(null);
+  const [loadError, setLoadError] = useState(false);
 
-  // Set window width for responsive scaling
   useEffect(() => {
     setWidth(window.innerWidth);
   }, []);
 
   const pdfFile = "/Nityash_resume.pdf"; // PDF in public folder
 
-  // Called when PDF is loaded successfully
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
+    setLoadError(false);
     console.log(`PDF loaded successfully with ${numPages} pages`);
+  };
+
+  const onDocumentLoadError = (error) => {
+    console.error("PDF failed to load:", error);
+    setLoadError(true);
   };
 
   return (
@@ -39,19 +44,25 @@ function ResumeNew() {
 
       {/* PDF Viewer */}
       <Row className="resume" style={{ justifyContent: "center", overflowX: "auto" }}>
-        <Document
-          file={pdfFile}
-          onLoadSuccess={onDocumentLoadSuccess}
-          onLoadError={(error) => console.error("PDF load error:", error)}
-        >
-          {Array.from(new Array(numPages), (el, index) => (
-            <Page
-              key={`page_${index + 1}`}
-              pageNumber={index + 1}
-              scale={width > 786 ? 1.7 : 0.6}
-            />
-          ))}
-        </Document>
+        {loadError ? (
+          <Alert variant="danger" style={{ textAlign: "center" }}>
+            PDF failed to load. You can still download it using the button above.
+          </Alert>
+        ) : (
+          <Document
+            file={pdfFile}
+            onLoadSuccess={onDocumentLoadSuccess}
+            onLoadError={onDocumentLoadError}
+          >
+            {Array.from(new Array(numPages), (el, index) => (
+              <Page
+                key={`page_${index + 1}`}
+                pageNumber={index + 1}
+                scale={width > 786 ? 1.7 : 0.6}
+              />
+            ))}
+          </Document>
+        )}
       </Row>
 
       {/* Bottom Download Button */}
